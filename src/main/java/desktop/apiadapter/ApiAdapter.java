@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import desktop.model.Contenedor;
+import desktop.model.Recolector;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,8 +45,6 @@ public class ApiAdapter {
         JsonNode jsonArray;
         try {
             jsonArray = mapper.readTree(response);
-            String status = String.valueOf(jsonArray.get("success"));
-            String message = String.valueOf(jsonArray.get("message"));
             Contenedor contenedor;
             for(JsonNode node : jsonArray) {
                 System.out.println(node);
@@ -62,5 +61,38 @@ public class ApiAdapter {
         }
 
         return contenedors;
+    }
+
+    public static List<Recolector> getRecolectores(String empresa) {
+        String url = domain + "/empresa/" + empresa + "/recolector";
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+        String response = webResource.get(String.class);
+
+        return buildListOfRecolectores(response);
+    }
+
+    private static List<Recolector> buildListOfRecolectores(String response) {
+        List<Recolector> recolectores = new ArrayList<>();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonArray;
+        try {
+            jsonArray = mapper.readTree(response);
+            Recolector recolector;
+            for(JsonNode node : jsonArray) {
+                System.out.println(node);
+                recolector = new Recolector();
+                recolector.setId(Integer.parseInt(String.valueOf(node.get("id"))));
+                recolector.setNombre(String.valueOf(node.get("nombre")));
+                recolector.setDni(Integer.parseInt(String.valueOf(node.get("dni"))));
+                recolectores.add(recolector);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return recolectores;
     }
 }

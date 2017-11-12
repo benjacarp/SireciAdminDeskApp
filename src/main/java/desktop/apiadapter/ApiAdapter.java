@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import desktop.model.Contenedor;
 import desktop.model.Recolector;
 
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,5 +97,36 @@ public class ApiAdapter {
         }
 
         return recolectores;
+    }
+
+    public static String createContenedor(Contenedor contenedor, String empresa) {
+        String url = domain + "/empresa/" + empresa + "/contenedor";
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+
+        MultivaluedMap formData = new MultivaluedMapImpl();
+        formData.add("material", contenedor.getMaterial());
+        formData.add("cordX", String.valueOf(contenedor.getCordX()));
+        formData.add("cordY", String.valueOf(contenedor.getCordY()));
+
+        webResource
+                .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE);
+
+        return webResource.post(String.class, formData);
+    }
+
+    public static String createRecolector(Recolector recolector, String empresa) {
+        String url = domain + "/empresa/" + empresa + "/recolector";
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+
+        MultivaluedMap formData = new MultivaluedMapImpl();
+        formData.add("nombre", recolector.getNombre());
+        formData.add("dni", String.valueOf(recolector.getDni()));
+
+        webResource
+                .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE);
+
+        return webResource.post(String.class, formData);
     }
 }

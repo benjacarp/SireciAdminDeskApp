@@ -3,6 +3,8 @@ package desktop.frames;
 import desktop.apiadapter.ApiAdapter;
 import desktop.model.Contenedor;
 import desktop.model.ContenedorTableModel;
+import desktop.model.Recolector;
+import desktop.model.RecolectorTableModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,18 +19,17 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class EditContenedorFrame extends Stage {
+public class EditRecolectorFrame extends Stage {
 
     private final String empresa;
-    private final ContenedorTableModel table;
+    private final RecolectorTableModel table;
 
-    private TextField campoX = new TextField();
-    private TextField campoY = new TextField();
-    private TextField campoMaterial = new TextField();
+    private TextField campoNombre = new TextField();
+    private TextField campoDNI = new TextField();
 
     private Button createBtn;
 
-    public EditContenedorFrame(String empresa, ContenedorTableModel table) {
+    public EditRecolectorFrame(String empresa, RecolectorTableModel table) {
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
 
@@ -37,21 +38,6 @@ public class EditContenedorFrame extends Stage {
         initComponents();
         eventos();
         createStage();
-    }
-
-    private void eventos() {
-        createBtn.setOnAction(event -> crear());
-    }
-
-    private void crear() {
-        Contenedor contenedor = new Contenedor();
-        contenedor.setMaterial(campoMaterial.getText());
-        contenedor.setCordX(Integer.parseInt(campoX.getText()));
-        contenedor.setCordY(Integer.parseInt(campoY.getText()));
-        System.out.println(contenedor);
-        String response = ApiAdapter.createContenedor(contenedor, empresa);
-        table.update();
-        this.close();
     }
 
     private void createStage() {
@@ -65,18 +51,15 @@ public class EditContenedorFrame extends Stage {
         grid.setVgap(5);
         grid.setHgap(10);
         grid.setPrefWidth(300);
-        Label material = new Label("Material");
-        GridPane.setConstraints(material,0,0);
-        GridPane.setConstraints(campoMaterial,1,0);
-        Label x = new Label("X");
-        GridPane.setConstraints(x,0,1);
-        GridPane.setConstraints(campoX,1,1);
-        Label y = new Label("Y");
-        GridPane.setConstraints(y,0,2);
-        GridPane.setConstraints(campoY,1,2);
+        Label nombreLabel = new Label("Nombre");
+        GridPane.setConstraints(nombreLabel,0,0);
+        GridPane.setConstraints(campoNombre,1,0);
+        Label dniLabel = new Label("DNI");
+        GridPane.setConstraints(dniLabel,0,1);
+        GridPane.setConstraints(campoDNI,1,1);
 
         grid.getChildren().addAll(
-                material,campoMaterial,x,campoX,y,campoY);
+                nombreLabel,campoNombre,dniLabel,campoDNI);
 
         HBox hbox = new HBox();
         hbox.getChildren().addAll(createBtn);
@@ -87,6 +70,21 @@ public class EditContenedorFrame extends Stage {
         Scene scene = new Scene(vBox,230,150);
 
         this.setScene(scene);
+    }
+
+    private void crear() {
+        Recolector recolector = new Recolector();
+        recolector.setNombre(campoNombre.getText());
+        recolector.setDni(Integer.parseInt(campoDNI.getText()));
+        System.out.println(recolector);
+        String response = ApiAdapter.createRecolector(recolector, empresa);
+        System.out.println(response);
+        table.update();
+        this.close();
+    }
+
+    private void eventos() {
+        createBtn.setOnAction(event -> crear());
     }
 
     private void initComponents() {

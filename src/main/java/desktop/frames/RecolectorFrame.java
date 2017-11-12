@@ -53,7 +53,9 @@ public class RecolectorFrame extends Stage {
     }
 
     private void nuevoContenedorClick() {
-        System.out.println("nuevo recolector");
+        Stage stage = new EditRecolectorFrame(empresa, table);
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void initComponents() {

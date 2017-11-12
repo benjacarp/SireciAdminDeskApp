@@ -54,8 +54,9 @@ public class ContenedorFrame extends Stage {
     }
 
     private void nuevoContenedorClick() {
-        System.out.println("nuevo contenedor");
-        EditContenedorFrame editContenedorFrame = new EditContenedorFrame(empresa);
+        Stage stage = new EditContenedorFrame(empresa, table);
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void initComponents() {

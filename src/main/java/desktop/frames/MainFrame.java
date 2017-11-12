@@ -69,7 +69,6 @@ public class MainFrame extends Stage {
     }
 
     private void miCuentaClick() {
-        System.out.println("mi cuenta (" + empresa + ")");
         Stage stage = new CuentaFrame(empresa);
         stage.setResizable(false);
         stage.show();
@@ -89,6 +88,9 @@ public class MainFrame extends Stage {
 
     private void verContenedoresClick() {
         System.out.println("ver contenedores");
+        Stage stage = new ContenedorFrame(empresa);
+        stage.setResizable(false);
+        stage.show();
     }
 
     private ObservableList<String> cargarContenedores() {

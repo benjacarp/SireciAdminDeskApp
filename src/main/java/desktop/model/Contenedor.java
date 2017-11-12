@@ -1,38 +1,53 @@
 package desktop.model;
 
 public class Contenedor {
-    private String numeroDeSerie;
-    private String modelo;
+    private int id;
+    private String material;
+    private int cordX;
+    private int cordY;
 
     public Contenedor() {
     }
 
-    public Contenedor(String numeroDeSerie, String modelo) {
-        this.numeroDeSerie = numeroDeSerie;
-        this.modelo = modelo;
+    public String getMaterial() {
+        return material;
     }
 
-    public String getNumeroDeSerie() {
-        return numeroDeSerie;
+    public void setMaterial(String material) {
+        this.material = material;
     }
 
-    public void setNumeroDeSerie(String numeroDeSerie) {
-        this.numeroDeSerie = numeroDeSerie;
+    public int getCordX() {
+        return cordX;
     }
 
-    public String getModelo() {
-        return modelo;
+    public void setCordX(int cordX) {
+        this.cordX = cordX;
     }
 
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getCordY() {
+        return cordY;
+    }
+
+    public void setCordY(int cordY) {
+        this.cordY = cordY;
     }
 
     @Override
     public String toString() {
         return "Contenedor{" +
-                "numeroDeSerie='" + numeroDeSerie + '\'' +
-                ", modelo='" + modelo + '\'' +
+                "id=" + id +
+                ", material='" + material + '\'' +
+                ", cordX=" + cordX +
+                ", cordY=" + cordY +
                 '}';
     }
 }

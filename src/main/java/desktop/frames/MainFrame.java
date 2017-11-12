@@ -3,45 +3,43 @@ package desktop.frames;
 import desktop.model.Recolector;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class MainFrame extends Stage {
 
+    private final String empresa;
+
     private MenuBar menuBar;
     private Menu menuRecolectores;
     private Menu menuContenedores;
+    private Menu menuCuenta;
     private MenuItem menuItemVerRecolectores;
     private MenuItem menuItemAltaRecolectores;
     private MenuItem menuItemVerContenedores;
     private MenuItem menuItemPrestamos;
+    private MenuItem menuItemMiCuenta;
+
     private MenuItem menuItemAltaContenedores;
 
-    private ListView<Recolector> recolectoresList;
-    private ListView<String> contenedoresList;
-
-    public MainFrame() {
+    public MainFrame(String message) {
+        this.empresa = message.substring(1,message.length()-1);
         initComponents();
         cargarInfo();
         createStage();
     }
 
     private void cargarInfo() {
-        recolectoresList.getItems().setAll(cargarRecolectores());
-        contenedoresList.getItems().setAll(cargarContenedores());
     }
 
     private void initComponents() {
         menuBar = new MenuBar();
 
         menuRecolectores = new Menu("Recolectores");
-        menuContenedores = new Menu("Ver todos");
+        menuContenedores = new Menu("Contenedores");
+        menuCuenta = new Menu("Cuenta");
 
         menuItemVerRecolectores = new MenuItem("Ver Recolectores");
         menuItemAltaRecolectores = new MenuItem("Nuevo Recolector");
@@ -49,22 +47,32 @@ public class MainFrame extends Stage {
         menuItemVerContenedores = new MenuItem("Ver Contenedores");
         menuItemAltaContenedores = new MenuItem("Nuevo Contenedor...");
 
+        menuItemMiCuenta = new MenuItem("Mi Cuenta...");
+
         menuBar.getMenus().add(menuRecolectores);
         menuBar.getMenus().add(menuContenedores);
+        menuBar.getMenus().add(menuCuenta);
 
         menuRecolectores.getItems().add(menuItemVerRecolectores);
         menuRecolectores.getItems().add(menuItemAltaRecolectores);
         menuContenedores.getItems().add(menuItemVerContenedores);
         menuContenedores.getItems().add(menuItemAltaContenedores);
-
-        recolectoresList = new ListView<>();
-        contenedoresList = new ListView<>();
+        menuCuenta.getItems().add(menuItemMiCuenta);
 
         menuItemVerRecolectores.setOnAction(event -> verRecolectoresClick());
         menuItemAltaRecolectores.setOnAction(event -> altaRecolectoresClick());
 
         menuItemVerContenedores.setOnAction(event -> verContenedoresClick());
         menuItemAltaContenedores.setOnAction(event -> altaContenedoresClick());
+
+        menuItemMiCuenta.setOnAction(event -> miCuentaClick());
+    }
+
+    private void miCuentaClick() {
+        System.out.println("mi cuenta (" + empresa + ")");
+        Stage stage = new CuentaFrame(empresa);
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void altaRecolectoresClick() {
@@ -101,17 +109,17 @@ public class MainFrame extends Stage {
         BorderPane layout = new BorderPane();
         layout.setTop(menuBar);
 
-        VBox centerVBox = new VBox();
-        centerVBox.setPadding(new Insets(20,20,20,20));
-        HBox botonera = new HBox();
-        centerVBox.getChildren().addAll(new Label("Contenedores"),contenedoresList,botonera);
-        botonera.getChildren().addAll(new Button("Ver"));
-        layout.setCenter(centerVBox);
-
-        VBox rightVBox = new VBox();
-        rightVBox.setPadding(new Insets(20,20,20,20));
-        rightVBox.getChildren().addAll(new Label("Recolectores"),recolectoresList);
-        layout.setRight(rightVBox);
+//        VBox centerVBox = new VBox();
+//        centerVBox.setPadding(new Insets(20,20,20,20));
+//        HBox botonera = new HBox();
+//        centerVBox.getChildren().addAll(new Label("Contenedores"),contenedoresList,botonera);
+//        botonera.getChildren().addAll(new Button("Ver"));
+//        layout.setCenter(centerVBox);
+//
+//        VBox rightVBox = new VBox();
+//        rightVBox.setPadding(new Insets(20,20,20,20));
+//        rightVBox.getChildren().addAll(new Label("Recolectores"),recolectoresList);
+//        layout.setRight(rightVBox);
 
         Scene scene = new Scene(layout, 800, 600);
         setScene(scene);

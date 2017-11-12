@@ -92,9 +92,8 @@ public class LoginFrame extends Stage {
             String status = String.valueOf(jsonArray.get("success"));
             String message = String.valueOf(jsonArray.get("message"));
 
-//            if (status.equals("true")) {
-            if (true) {
-                initMainFrame();
+            if (status.equals("true")) {
+                initMainFrame(message);
             } else {
                 this.messageLabel.setText("   " + message);
             }
@@ -106,8 +105,8 @@ public class LoginFrame extends Stage {
         }
     }
 
-    private void initMainFrame() {
-        Stage stage = new MainFrame();
+    private void initMainFrame(String message) {
+        Stage stage = new MainFrame(message);
         stage.setResizable(false);
         stage.setOnCloseRequest(event -> {
             try {

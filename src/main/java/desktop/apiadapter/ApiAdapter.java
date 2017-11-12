@@ -5,10 +5,19 @@ import com.sun.jersey.api.client.WebResource;
 
 public class ApiAdapter {
 
+    private static String domain = "http://localhost:8080";
+
     public static String logIn(String user, String pass) throws Exception {
-        String url = "http://localhost:8080/empresa/login?user=" + user + "&pass=" + pass;
+        String url = domain + "/empresa/login?user=" + user + "&pass=" + pass;
         Client client = Client.create();
         WebResource webResource = client.resource(url);
-        return webResource.post(String.class);
+        return webResource.get(String.class);
+    }
+
+    public static String infoEmpresa(String empresa) {
+        String url = domain + "/empresa/" + empresa;
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+        return webResource.get(String.class);
     }
 }

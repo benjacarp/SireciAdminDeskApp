@@ -1,5 +1,6 @@
 package desktop.frames;
 
+import desktop.apiadapter.ApiAdapter;
 import desktop.model.Contenedor;
 import desktop.model.ContenedorTableModel;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ public class ContenedorFrame extends Stage {
     private Button btnNuevo;
     private Button btnModificar;
     private Button btnEliminar;
+    private Button btnAsignar;
     private Contenedor currentContenedor;
 
 
@@ -33,7 +35,7 @@ public class ContenedorFrame extends Stage {
     private void createStage() {
         VBox pane = new VBox();
         HBox botonera = new HBox();
-        botonera.getChildren().addAll(btnNuevo,btnModificar,btnEliminar);
+        botonera.getChildren().addAll(btnNuevo,btnModificar,btnEliminar,btnAsignar);
         pane.getChildren().addAll(table,botonera);
         Scene scene = new Scene(pane,550,300);
         this.setScene(scene);
@@ -43,18 +45,28 @@ public class ContenedorFrame extends Stage {
         btnNuevo.setOnAction(event -> nuevoContenedorClick());
         btnModificar.setOnAction(event -> modificarContenedorClick());
         btnEliminar.setOnAction(event -> eliminarContenedorClick());
+        btnAsignar.setOnAction(event -> asignarClick());
+    }
+
+    private void asignarClick() {
+        Stage stage = new AsignarRecolectorFrame(empresa, table,currentContenedor.getId());
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void eliminarContenedorClick() {
-        System.out.println(currentContenedor);
+        ApiAdapter.deleteContenedor(empresa, currentContenedor.getId());
+        table.update();
     }
 
     private void modificarContenedorClick() {
-        System.out.println(currentContenedor);
+        Stage stage = new EditContenedorFrame(empresa, table,currentContenedor);
+        stage.setResizable(false);
+        stage.show();
     }
 
     private void nuevoContenedorClick() {
-        Stage stage = new EditContenedorFrame(empresa, table);
+        Stage stage = new EditContenedorFrame(empresa, table, null);
         stage.setResizable(false);
         stage.show();
     }
@@ -66,6 +78,7 @@ public class ContenedorFrame extends Stage {
         btnNuevo = new Button("Nuevo");
         btnModificar = new Button("Modificar");
         btnEliminar = new Button("Eliminar");
+        btnAsignar = new Button("Asignar");
     }
 
     private void changeTableSelection() {

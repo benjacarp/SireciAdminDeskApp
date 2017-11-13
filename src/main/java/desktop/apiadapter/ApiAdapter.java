@@ -42,7 +42,7 @@ public class ApiAdapter {
     }
 
     private static List<Contenedor> buildListOfContenedores(String response) {
-        List<Contenedor> contenedors = new ArrayList<>();
+        List<Contenedor> contenedores = new ArrayList<>();
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonArray;
@@ -53,17 +53,19 @@ public class ApiAdapter {
                 System.out.println(node);
                 contenedor = new Contenedor();
                 contenedor.setId(Integer.parseInt(String.valueOf(node.get("id"))));
-                contenedor.setMaterial(String.valueOf(node.get("material")));
+                contenedor.setMaterial(node.get("material").asText());
                 contenedor.setCordX(Integer.parseInt(String.valueOf(node.get("cordX"))));
                 contenedor.setCordY(Integer.parseInt(String.valueOf(node.get("cordY"))));
-                contenedors.add(contenedor);
+                contenedor.setRecolectorName(node.get("recolectorName").asText());
+//                contenedor.setRecolectorName("asdfasdf");
+                contenedores.add(contenedor);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return contenedors;
+        return contenedores;
     }
 
     public static List<Recolector> getRecolectores(String empresa) {
@@ -87,8 +89,20 @@ public class ApiAdapter {
                 System.out.println(node);
                 recolector = new Recolector();
                 recolector.setId(Integer.parseInt(String.valueOf(node.get("id"))));
-                recolector.setNombre(String.valueOf(node.get("nombre")));
+                recolector.setNombre(node.get("nombre").asText());
                 recolector.setDni(Integer.parseInt(String.valueOf(node.get("dni"))));
+
+                List<Contenedor> contenedores = new ArrayList<>();
+                Contenedor contenedor;
+                for (JsonNode contenedorNode : node.get("contenedorDTOs")) {
+                    contenedor = new Contenedor();
+                    contenedor.setId(Integer.parseInt(contenedorNode.get("id").asText()));
+                    contenedor.setMaterial(contenedorNode.get("material").asText());
+                    contenedor.setCordX(Integer.parseInt(contenedorNode.get("cordX").asText()));
+                    contenedor.setCordY(Integer.parseInt(contenedorNode.get("cordY").asText()));
+                    contenedores.add(contenedor);
+                }
+                recolector.getContenedores().addAll(contenedores);
                 recolectores.add(recolector);
             }
 
@@ -128,5 +142,56 @@ public class ApiAdapter {
                 .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE);
 
         return webResource.post(String.class, formData);
+    }
+
+    public static String modifyContenedor(Contenedor contenedor, String empresa, int id) {
+        String url = domain + "/empresa/" + empresa + "/contenedor" + "/" + id;
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+
+        MultivaluedMap formData = new MultivaluedMapImpl();
+        formData.add("material", contenedor.getMaterial());
+        formData.add("cordX", String.valueOf(contenedor.getCordX()));
+        formData.add("cordY", String.valueOf(contenedor.getCordY()));
+
+        webResource
+                .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE);
+
+        return webResource.put(String.class, formData);
+    }
+
+    public static String modifyRecolector(Recolector recolector, String empresa, int id) {
+        String url = domain + "/empresa/" + empresa + "/recolector" + "/" + id;
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+
+        MultivaluedMap formData = new MultivaluedMapImpl();
+        formData.add("nombre", recolector.getNombre());
+        formData.add("dni", String.valueOf(recolector.getDni()));
+
+        webResource.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE);
+
+        return webResource.put(String.class, formData);
+    }
+
+    public static void deleteContenedor(String empresa, int id) {
+        String url = domain + "/empresa/" + empresa + "/contenedor" + "/" + id;
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+        webResource.delete(String.class);
+    }
+
+    public static void deleteRecolector(String empresa, int id) {
+        String url = domain + "/empresa/" + empresa + "/recolector" + "/" + id;
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+        webResource.delete(String.class);
+    }
+
+    public static void asignarRecolector(int contenedorId, int id) {
+        String url = domain + "/recolector/" + id + "/contenedor" + "/" + contenedorId;
+        Client client = Client.create();
+        WebResource webResource = client.resource(url);
+        webResource.post(String.class);
     }
 }

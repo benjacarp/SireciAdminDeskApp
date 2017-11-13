@@ -19,12 +19,13 @@ public class ContenedorTableModel extends TableView<Contenedor> {
     private TableColumn<Contenedor, String> materialColumn;
     private TableColumn<Contenedor, Integer> xColumn;
     private TableColumn<Contenedor, Integer> yColumn;
+    private TableColumn<Contenedor, String> recolectorColumn;
 
     public ContenedorTableModel(int minWidth, int minHeight, String empresa) {
         this.empresa = empresa;
         mapColumns();
         update();
-        this.getColumns().addAll(idColumn, materialColumn, xColumn, yColumn);
+        this.getColumns().addAll(idColumn, materialColumn, xColumn, yColumn,recolectorColumn);
         this.prefWidth(minWidth);
         this.prefHeight(minHeight);
     }
@@ -46,7 +47,7 @@ public class ContenedorTableModel extends TableView<Contenedor> {
 
     private void mapColumns() {
         idColumn = new TableColumn<>("Id");
-        idColumn.setPrefWidth(198);
+        idColumn.setPrefWidth(100);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         materialColumn = new TableColumn<>("Material");
@@ -60,5 +61,9 @@ public class ContenedorTableModel extends TableView<Contenedor> {
         yColumn = new TableColumn<>("Y");
         yColumn.setPrefWidth(60);
         yColumn.setCellValueFactory(new PropertyValueFactory<>("cordY"));
+
+        recolectorColumn = new TableColumn<>("Recolector");
+        recolectorColumn.setPrefWidth(100);
+        recolectorColumn.setCellValueFactory(new PropertyValueFactory<>("recolectorName"));
     }
 }

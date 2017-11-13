@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AdminDeskApp.iml" filepath="$PROJECT_DIR$/AdminDeskApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdminDeskApp.iml" filepath="$PROJECT_DIR$/.idea/modules/AdminDeskApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdminDeskApp_main.iml" filepath="$PROJECT_DIR$/.idea/modules/AdminDeskApp_main.iml" group="AdminDeskApp" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdminDeskApp_test.iml" filepath="$PROJECT_DIR$/.idea/modules/AdminDeskApp_test.iml" group="AdminDeskApp" />
     </modules>
   </component>
 </project>

@@ -42,11 +42,11 @@ public class RecolectorTableModel extends TableView<Recolector> {
 
     private void mapColumns() {
         idColumn = new TableColumn<>("Id");
-        idColumn.setPrefWidth(198);
+        idColumn.setPrefWidth(60);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         nombreColumn = new TableColumn<>("Nombre");
-        nombreColumn.setPrefWidth(100);
+        nombreColumn.setPrefWidth(150);
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 
         dniColumn = new TableColumn<>("DNI");

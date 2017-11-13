@@ -2,7 +2,6 @@ package desktop.frames;
 
 import desktop.apiadapter.ApiAdapter;
 import desktop.model.Contenedor;
-import desktop.model.ContenedorTableModel;
 import desktop.model.Recolector;
 import desktop.model.RecolectorTableModel;
 import javafx.geometry.Insets;
@@ -23,16 +22,18 @@ public class EditRecolectorFrame extends Stage {
 
     private final String empresa;
     private final RecolectorTableModel table;
+    private final Recolector currentRecolector;
 
     private TextField campoNombre = new TextField();
     private TextField campoDNI = new TextField();
 
     private Button createBtn;
 
-    public EditRecolectorFrame(String empresa, RecolectorTableModel table) {
+    public EditRecolectorFrame(String empresa, RecolectorTableModel table, Recolector currentRecolector) {
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
 
+        this.currentRecolector = currentRecolector;
         this.table = table;
         this.empresa = empresa;
         initComponents();
@@ -84,10 +85,31 @@ public class EditRecolectorFrame extends Stage {
     }
 
     private void eventos() {
-        createBtn.setOnAction(event -> crear());
+        if (currentRecolector == null) {
+            createBtn.setOnAction(event -> crear());
+        } else {
+            createBtn.setOnAction(event -> modificar());
+        }
+    }
+
+    private void modificar() {
+        Recolector recolector = currentRecolector;
+        recolector.setDni(Integer.parseInt(campoDNI.getText()));
+        recolector.setNombre(campoNombre.getText());
+        String response = ApiAdapter.modifyRecolector(recolector, empresa, recolector.getId());
+        table.update();
+        this.close();
     }
 
     private void initComponents() {
-        createBtn = new Button("Crear");
+        if (currentRecolector == null) {
+            campoNombre = new TextField();
+            campoDNI = new TextField();
+            createBtn = new Button("Crear");
+        } else {
+            campoNombre = new TextField(currentRecolector.getNombre());
+            campoDNI = new TextField("" + currentRecolector.getDni());
+            createBtn = new Button("Modificar");
+        }
     }
 }

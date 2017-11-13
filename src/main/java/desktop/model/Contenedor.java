@@ -5,6 +5,7 @@ public class Contenedor {
     private String material;
     private int cordX;
     private int cordY;
+    private String recolectorName;
 
     public Contenedor() {
     }
@@ -41,13 +42,16 @@ public class Contenedor {
         this.cordY = cordY;
     }
 
+    public String getRecolectorName() {
+        return recolectorName;
+    }
+
+    public void setRecolectorName(String recolectorName) {
+        this.recolectorName = recolectorName;
+    }
+
     @Override
     public String toString() {
-        return "Contenedor{" +
-                "id=" + id +
-                ", material='" + material + '\'' +
-                ", cordX=" + cordX +
-                ", cordY=" + cordY +
-                '}';
+        return "Contenedor: " + id + " ubicacion: " + cordX + "," + cordY + ". material: " + material;
     }
 }

@@ -1,9 +1,13 @@
 package desktop.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Recolector {
     private int id;
     private int dni;
     private String nombre;
+    private List<Contenedor> contenedores = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -27,6 +31,10 @@ public class Recolector {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Contenedor> getContenedores() {
+        return contenedores;
     }
 
     @Override

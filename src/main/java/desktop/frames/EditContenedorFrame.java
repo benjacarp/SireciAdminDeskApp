@@ -21,6 +21,7 @@ public class EditContenedorFrame extends Stage {
 
     private final String empresa;
     private final ContenedorTableModel table;
+    private final Contenedor currentContenedor;
 
     private TextField campoX = new TextField();
     private TextField campoY = new TextField();
@@ -28,10 +29,11 @@ public class EditContenedorFrame extends Stage {
 
     private Button createBtn;
 
-    public EditContenedorFrame(String empresa, ContenedorTableModel table) {
+    public EditContenedorFrame(String empresa, ContenedorTableModel table, Contenedor currentContenedor) {
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
 
+        this.currentContenedor = currentContenedor;
         this.table = table;
         this.empresa = empresa;
         initComponents();
@@ -40,7 +42,22 @@ public class EditContenedorFrame extends Stage {
     }
 
     private void eventos() {
-        createBtn.setOnAction(event -> crear());
+        if (currentContenedor == null) {
+            createBtn.setOnAction(event -> crear());
+        } else {
+            createBtn.setOnAction(event -> modificar());
+        }
+    }
+
+    private void modificar() {
+        Contenedor contenedor = currentContenedor;
+        contenedor.setMaterial(campoMaterial.getText());
+        contenedor.setCordX(Integer.parseInt(campoX.getText()));
+        contenedor.setCordY(Integer.parseInt(campoY.getText()));
+        System.out.println(contenedor);
+        String response = ApiAdapter.modifyContenedor(contenedor, empresa, contenedor.getId());
+        table.update();
+        this.close();
     }
 
     private void crear() {
@@ -90,6 +107,16 @@ public class EditContenedorFrame extends Stage {
     }
 
     private void initComponents() {
-        createBtn = new Button("Crear");
+        if (currentContenedor == null) {
+            campoX = new TextField();
+            campoY = new TextField();
+            campoMaterial = new TextField();
+            createBtn = new Button("Crear");
+        } else {
+            campoX = new TextField("" + currentContenedor.getCordX());
+            campoY = new TextField("" + currentContenedor.getCordY());
+            campoMaterial = new TextField(currentContenedor.getMaterial());
+            createBtn = new Button("Modificar");
+        }
     }
 }

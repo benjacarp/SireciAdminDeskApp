@@ -6,10 +6,7 @@ import desktop.model.ContenedorTableModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -51,25 +48,46 @@ public class EditContenedorFrame extends Stage {
     }
 
     private void modificar() {
-        Contenedor contenedor = currentContenedor;
-        contenedor.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
-        contenedor.setCordX(Integer.parseInt(campoX.getText()));
-        contenedor.setCordY(Integer.parseInt(campoY.getText()));
-        System.out.println(contenedor);
-        String response = ApiAdapter.modifyContenedor(contenedor, empresa, contenedor.getId());
-        table.update();
-        this.close();
+        if (campoX.getText().matches("^(0|[1-9][0-9]*)$")
+                && campoY.getText().matches("^(0|[1-9][0-9]*)$")
+                ) {
+            Contenedor contenedor = currentContenedor;
+            contenedor.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
+            contenedor.setCordX(Integer.parseInt(campoX.getText()));
+            contenedor.setCordY(Integer.parseInt(campoY.getText()));
+            System.out.println(contenedor);
+            String response = ApiAdapter.modifyContenedor(contenedor, empresa, contenedor.getId());
+            table.update();
+            this.close();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de validacion");
+            alert.setHeaderText("Ubicacion incorrecta");
+            alert.setContentText("Los campos X e Y deben ser numericos");
+            alert.show();
+        }
     }
 
     private void crear() {
-        Contenedor contenedor = new Contenedor();
-        contenedor.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
-        contenedor.setCordX(Integer.parseInt(campoX.getText()));
-        contenedor.setCordY(Integer.parseInt(campoY.getText()));
-        System.out.println(contenedor);
-        String response = ApiAdapter.createContenedor(contenedor, empresa);
-        table.update();
-        this.close();
+        if (campoX.getText().matches("^(0|[1-9][0-9]*)$")
+                && campoY.getText().matches("^(0|[1-9][0-9]*)$")
+                ) {
+            Contenedor contenedor = new Contenedor();
+            contenedor.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
+            contenedor.setCordX(Integer.parseInt(campoX.getText()));
+            contenedor.setCordY(Integer.parseInt(campoY.getText()));
+            System.out.println(contenedor);
+            String response = ApiAdapter.createContenedor(contenedor, empresa);
+            table.update();
+            this.close();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de validacion");
+            alert.setHeaderText("Ubicacion incorrecta");
+            alert.setContentText("Los campos X e Y deben ser numericos");
+            alert.show();
+        }
+
     }
 
     private void createStage() {

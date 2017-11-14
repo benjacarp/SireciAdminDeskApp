@@ -7,6 +7,7 @@ import desktop.model.RecolectorTableModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -74,14 +75,22 @@ public class EditRecolectorFrame extends Stage {
     }
 
     private void crear() {
-        Recolector recolector = new Recolector();
-        recolector.setNombre(campoNombre.getText());
-        recolector.setDni(Integer.parseInt(campoDNI.getText()));
-        System.out.println(recolector);
-        String response = ApiAdapter.createRecolector(recolector, empresa);
-        System.out.println(response);
-        table.update();
-        this.close();
+        if (campoDNI.getText().matches("^(0|[1-9][0-9]*)$")) {
+            Recolector recolector = new Recolector();
+            recolector.setNombre(campoNombre.getText());
+            recolector.setDni(Integer.parseInt(campoDNI.getText()));
+            System.out.println(recolector);
+            String response = ApiAdapter.createRecolector(recolector, empresa);
+            System.out.println(response);
+            table.update();
+            this.close();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de validacion");
+            alert.setHeaderText("DNI invalido");
+            alert.setContentText("El dni debe ser numerico");
+            alert.show();
+        }
     }
 
     private void eventos() {
@@ -93,12 +102,20 @@ public class EditRecolectorFrame extends Stage {
     }
 
     private void modificar() {
-        Recolector recolector = currentRecolector;
-        recolector.setDni(Integer.parseInt(campoDNI.getText()));
-        recolector.setNombre(campoNombre.getText());
-        String response = ApiAdapter.modifyRecolector(recolector, empresa, recolector.getId());
-        table.update();
-        this.close();
+        if (campoDNI.getText().matches("^(0|[1-9][0-9]*)$")) {
+            Recolector recolector = currentRecolector;
+            recolector.setDni(Integer.parseInt(campoDNI.getText()));
+            recolector.setNombre(campoNombre.getText());
+            String response = ApiAdapter.modifyRecolector(recolector, empresa, recolector.getId());
+            table.update();
+            this.close();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de validacion");
+            alert.setHeaderText("DNI invalido");
+            alert.setContentText("El dni debe ser numerico");
+            alert.show();
+        }
     }
 
     private void initComponents() {

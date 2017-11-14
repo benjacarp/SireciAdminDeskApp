@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -25,7 +26,7 @@ public class EditContenedorFrame extends Stage {
 
     private TextField campoX = new TextField();
     private TextField campoY = new TextField();
-    private TextField campoMaterial = new TextField();
+    private ComboBox<String> comboMaterial = new ComboBox<>();
 
     private Button createBtn;
 
@@ -51,7 +52,7 @@ public class EditContenedorFrame extends Stage {
 
     private void modificar() {
         Contenedor contenedor = currentContenedor;
-        contenedor.setMaterial(campoMaterial.getText());
+        contenedor.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
         contenedor.setCordX(Integer.parseInt(campoX.getText()));
         contenedor.setCordY(Integer.parseInt(campoY.getText()));
         System.out.println(contenedor);
@@ -62,7 +63,7 @@ public class EditContenedorFrame extends Stage {
 
     private void crear() {
         Contenedor contenedor = new Contenedor();
-        contenedor.setMaterial(campoMaterial.getText());
+        contenedor.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
         contenedor.setCordX(Integer.parseInt(campoX.getText()));
         contenedor.setCordY(Integer.parseInt(campoY.getText()));
         System.out.println(contenedor);
@@ -84,7 +85,7 @@ public class EditContenedorFrame extends Stage {
         grid.setPrefWidth(300);
         Label material = new Label("Material");
         GridPane.setConstraints(material,0,0);
-        GridPane.setConstraints(campoMaterial,1,0);
+        GridPane.setConstraints(comboMaterial,1,0);
         Label x = new Label("X");
         GridPane.setConstraints(x,0,1);
         GridPane.setConstraints(campoX,1,1);
@@ -93,7 +94,7 @@ public class EditContenedorFrame extends Stage {
         GridPane.setConstraints(campoY,1,2);
 
         grid.getChildren().addAll(
-                material,campoMaterial,x,campoX,y,campoY);
+                material, comboMaterial,x,campoX,y,campoY);
 
         HBox hbox = new HBox();
         hbox.getChildren().addAll(createBtn);
@@ -110,12 +111,12 @@ public class EditContenedorFrame extends Stage {
         if (currentContenedor == null) {
             campoX = new TextField();
             campoY = new TextField();
-            campoMaterial = new TextField();
+            comboMaterial.getItems().addAll("pet","vidrio","aluminio");
             createBtn = new Button("Crear");
         } else {
             campoX = new TextField("" + currentContenedor.getCordX());
             campoY = new TextField("" + currentContenedor.getCordY());
-            campoMaterial = new TextField(currentContenedor.getMaterial());
+            comboMaterial.getSelectionModel().select(currentContenedor.getMaterial());
             createBtn = new Button("Modificar");
         }
     }

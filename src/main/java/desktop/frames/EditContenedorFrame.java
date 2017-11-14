@@ -108,10 +108,10 @@ public class EditContenedorFrame extends Stage {
     }
 
     private void initComponents() {
+        comboMaterial.getItems().addAll("pet","vidrio","aluminio");
         if (currentContenedor == null) {
             campoX = new TextField();
             campoY = new TextField();
-            comboMaterial.getItems().addAll("pet","vidrio","aluminio");
             createBtn = new Button("Crear");
         } else {
             campoX = new TextField("" + currentContenedor.getCordX());

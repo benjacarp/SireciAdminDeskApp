@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ApiAdapter {
 
-    private static String domain = "http://localhost:8080";
+    private static String domain = "https://sci-utn.herokuapp.com/";
 
     public static String logIn(String user, String pass) throws Exception {
         String url = domain + "/empresa/login?user=" + user + "&pass=" + pass;

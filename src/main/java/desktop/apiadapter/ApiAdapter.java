@@ -99,8 +99,9 @@ public class ApiAdapter {
                     contenedor = new Contenedor();
                     contenedor.setId(Integer.parseInt(contenedorNode.get("id").asText()));
                     contenedor.setMaterial(contenedorNode.get("material").asText());
-                    contenedor.setCordX(Integer.parseInt(contenedorNode.get("cordX").asText()));
-                    contenedor.setCordY(Integer.parseInt(contenedorNode.get("cordY").asText()));
+                    contenedor.setCordX(Double.parseDouble(contenedorNode.get("cordX").asText()));
+                    contenedor.setCordY(Double.parseDouble(contenedorNode.get("cordY").asText()));
+                    contenedor.setCapacidad(Double.parseDouble(contenedorNode.get("capacidad").asText()));
                     contenedores.add(contenedor);
                 }
                 recolector.getContenedores().addAll(contenedores);

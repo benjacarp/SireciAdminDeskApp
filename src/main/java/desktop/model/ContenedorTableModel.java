@@ -19,13 +19,14 @@ public class ContenedorTableModel extends TableView<Contenedor> {
     private TableColumn<Contenedor, String> materialColumn;
     private TableColumn<Contenedor, Integer> xColumn;
     private TableColumn<Contenedor, Integer> yColumn;
+    private TableColumn<Contenedor, Double> capacidadColumn;
     private TableColumn<Contenedor, String> recolectorColumn;
 
     public ContenedorTableModel(int minWidth, int minHeight, String empresa) {
         this.empresa = empresa;
         mapColumns();
         update();
-        this.getColumns().addAll(idColumn, materialColumn, xColumn, yColumn,recolectorColumn);
+        this.getColumns().addAll(idColumn, materialColumn, xColumn, yColumn,capacidadColumn,recolectorColumn);
         this.prefWidth(minWidth);
         this.prefHeight(minHeight);
     }
@@ -47,7 +48,7 @@ public class ContenedorTableModel extends TableView<Contenedor> {
 
     private void mapColumns() {
         idColumn = new TableColumn<>("Id");
-        idColumn.setPrefWidth(100);
+        idColumn.setPrefWidth(50);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         materialColumn = new TableColumn<>("Material");
@@ -55,12 +56,16 @@ public class ContenedorTableModel extends TableView<Contenedor> {
         materialColumn.setCellValueFactory(new PropertyValueFactory<>("material"));
 
         xColumn = new TableColumn<>("X");
-        xColumn.setPrefWidth(60);
+        xColumn.setPrefWidth(80);
         xColumn.setCellValueFactory(new PropertyValueFactory<>("cordX"));
 
         yColumn = new TableColumn<>("Y");
-        yColumn.setPrefWidth(60);
+        yColumn.setPrefWidth(80);
         yColumn.setCellValueFactory(new PropertyValueFactory<>("cordY"));
+
+        capacidadColumn = new TableColumn<>("Capacidad");
+        capacidadColumn.setPrefWidth(100);
+        capacidadColumn.setCellValueFactory(new PropertyValueFactory<>("capacidad"));
 
         recolectorColumn = new TableColumn<>("Recolector");
         recolectorColumn.setPrefWidth(100);

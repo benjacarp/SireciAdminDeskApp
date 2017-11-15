@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ApiAdapter {
 
-    private static String domain = "https://sci-utn.herokuapp.com";
+    private static String domain = "http://localhost:8080";
 
     public static String logIn(String user, String pass) throws Exception {
         String url = domain + "/empresa/login?user=" + user + "&pass=" + pass;
@@ -54,9 +54,10 @@ public class ApiAdapter {
                 contenedor = new Contenedor();
                 contenedor.setId(Integer.parseInt(String.valueOf(node.get("id"))));
                 contenedor.setMaterial(node.get("material").asText());
-                contenedor.setCordX(Integer.parseInt(String.valueOf(node.get("cordX"))));
-                contenedor.setCordY(Integer.parseInt(String.valueOf(node.get("cordY"))));
+                contenedor.setCordX(Double.parseDouble(String.valueOf(node.get("cordX"))));
+                contenedor.setCordY(Double.parseDouble(String.valueOf(node.get("cordY"))));
                 contenedor.setRecolectorName(node.get("recolectorName").asText());
+                contenedor.setCapacidad(Double.parseDouble(String.valueOf(node.get("capacidad"))));
 //                contenedor.setRecolectorName("asdfasdf");
                 contenedores.add(contenedor);
             }
@@ -122,6 +123,7 @@ public class ApiAdapter {
         formData.add("material", contenedor.getMaterial());
         formData.add("cordX", String.valueOf(contenedor.getCordX()));
         formData.add("cordY", String.valueOf(contenedor.getCordY()));
+        formData.add("capacidad", String.valueOf(contenedor.getCapacidad()));
 
         webResource
                 .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE);
@@ -153,6 +155,7 @@ public class ApiAdapter {
         formData.add("material", contenedor.getMaterial());
         formData.add("cordX", String.valueOf(contenedor.getCordX()));
         formData.add("cordY", String.valueOf(contenedor.getCordY()));
+        formData.add("capacidad", String.valueOf(contenedor.getCapacidad()));
 
         webResource
                 .type(MediaType.APPLICATION_FORM_URLENCODED_TYPE);

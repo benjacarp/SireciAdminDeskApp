@@ -23,7 +23,11 @@ public class EditContenedorFrame extends Stage {
 
     private TextField campoX = new TextField();
     private TextField campoY = new TextField();
+    private TextField campoCapacidad = new TextField();
     private ComboBox<String> comboMaterial = new ComboBox<>();
+
+    private String regexForCordenadas = "^-?[0-9]\\d*(\\.\\d+)?$";
+    private String regexForCapacidad = "^[0-9]\\d*(\\.\\d+)?$";
 
     private Button createBtn;
 
@@ -48,44 +52,50 @@ public class EditContenedorFrame extends Stage {
     }
 
     private void modificar() {
-        if (campoX.getText().matches("^(0|[1-9][0-9]*)$")
-                && campoY.getText().matches("^(0|[1-9][0-9]*)$")
+        if (validateNumericFields()
                 ) {
             Contenedor contenedor = currentContenedor;
             contenedor.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
-            contenedor.setCordX(Integer.parseInt(campoX.getText()));
-            contenedor.setCordY(Integer.parseInt(campoY.getText()));
+            contenedor.setCordX(Double.parseDouble(campoX.getText()));
+            contenedor.setCordY(Double.parseDouble(campoY.getText()));
+            contenedor.setCapacidad(Double.parseDouble(campoCapacidad.getText()));
             System.out.println(contenedor);
-            String response = ApiAdapter.modifyContenedor(contenedor, empresa, contenedor.getId());
+            ApiAdapter.modifyContenedor(contenedor, empresa, contenedor.getId());
             table.update();
             this.close();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error de validacion");
-            alert.setHeaderText("Ubicacion incorrecta");
-            alert.setContentText("Los campos X e Y deben ser numericos");
-            alert.show();
+            showAlert();
         }
     }
 
+    private void showAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error de validacion");
+        alert.setHeaderText("Ubicacion incorrecta");
+        alert.setContentText("Los campos X, Y y capacidad deben ser numericos (la capacidad no puede ser negativa");
+        alert.show();
+    }
+
+    private boolean validateNumericFields() {
+        return campoX.getText().matches(regexForCordenadas)
+                && campoY.getText().matches(regexForCordenadas)
+                && campoCapacidad.getText().matches(regexForCapacidad);
+    }
+
     private void crear() {
-        if (campoX.getText().matches("^(0|[1-9][0-9]*)$")
-                && campoY.getText().matches("^(0|[1-9][0-9]*)$")
+        if (validateNumericFields()
                 ) {
             Contenedor contenedor = new Contenedor();
             contenedor.setMaterial(comboMaterial.getSelectionModel().getSelectedItem());
-            contenedor.setCordX(Integer.parseInt(campoX.getText()));
-            contenedor.setCordY(Integer.parseInt(campoY.getText()));
+            contenedor.setCordX(Double.parseDouble(campoX.getText()));
+            contenedor.setCordY(Double.parseDouble(campoY.getText()));
+            contenedor.setCapacidad(Double.parseDouble(campoCapacidad.getText()));
             System.out.println(contenedor);
-            String response = ApiAdapter.createContenedor(contenedor, empresa);
+            ApiAdapter.createContenedor(contenedor, empresa);
             table.update();
             this.close();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error de validacion");
-            alert.setHeaderText("Ubicacion incorrecta");
-            alert.setContentText("Los campos X e Y deben ser numericos");
-            alert.show();
+            showAlert();
         }
 
     }
@@ -110,9 +120,12 @@ public class EditContenedorFrame extends Stage {
         Label y = new Label("Y");
         GridPane.setConstraints(y,0,2);
         GridPane.setConstraints(campoY,1,2);
+        Label capLabel = new Label("Capacidad");
+        GridPane.setConstraints(capLabel,0,3);
+        GridPane.setConstraints(campoCapacidad,1,3);
 
         grid.getChildren().addAll(
-                material, comboMaterial,x,campoX,y,campoY);
+                material, comboMaterial,x,campoX,y,campoY,capLabel,campoCapacidad);
 
         HBox hbox = new HBox();
         hbox.getChildren().addAll(createBtn);
@@ -120,7 +133,7 @@ public class EditContenedorFrame extends Stage {
         VBox vBox = new VBox();
         vBox.getChildren().addAll(grid,hbox);
 
-        Scene scene = new Scene(vBox,230,150);
+        Scene scene = new Scene(vBox,230,250);
 
         this.setScene(scene);
     }
@@ -128,13 +141,12 @@ public class EditContenedorFrame extends Stage {
     private void initComponents() {
         comboMaterial.getItems().addAll("pet","vidrio","aluminio");
         if (currentContenedor == null) {
-            campoX = new TextField();
-            campoY = new TextField();
             createBtn = new Button("Crear");
         } else {
             campoX = new TextField("" + currentContenedor.getCordX());
             campoY = new TextField("" + currentContenedor.getCordY());
             comboMaterial.getSelectionModel().select(currentContenedor.getMaterial());
+            campoCapacidad.setText(String.valueOf(currentContenedor.getCapacidad()));
             createBtn = new Button("Modificar");
         }
     }

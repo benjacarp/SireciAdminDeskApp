@@ -3,9 +3,10 @@ package desktop.model;
 public class Contenedor {
     private int id;
     private String material;
-    private int cordX;
-    private int cordY;
+    private double cordX;
+    private double cordY;
     private String recolectorName;
+    private double capacidad;
 
     public Contenedor() {
     }
@@ -18,11 +19,11 @@ public class Contenedor {
         this.material = material;
     }
 
-    public int getCordX() {
+    public double getCordX() {
         return cordX;
     }
 
-    public void setCordX(int cordX) {
+    public void setCordX(double cordX) {
         this.cordX = cordX;
     }
 
@@ -34,11 +35,11 @@ public class Contenedor {
         this.id = id;
     }
 
-    public int getCordY() {
+    public double getCordY() {
         return cordY;
     }
 
-    public void setCordY(int cordY) {
+    public void setCordY(double cordY) {
         this.cordY = cordY;
     }
 
@@ -50,8 +51,23 @@ public class Contenedor {
         this.recolectorName = recolectorName;
     }
 
+    public double getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(double capacidad) {
+        this.capacidad = capacidad;
+    }
+
     @Override
     public String toString() {
-        return "Contenedor: " + id + " ubicacion: " + cordX + "," + cordY + ". material: " + material;
+        return "Contenedor{" +
+                "id=" + id +
+                ", material='" + material + '\'' +
+                "\n cordX=" + cordX +
+                ", cordY=" + cordY +
+                "\n recolectorName='" + recolectorName + '\'' +
+                "\n capacidad=" + capacidad +
+                '}';
     }
 }

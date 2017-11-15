@@ -37,7 +37,7 @@ public class ContenedorFrame extends Stage {
         HBox botonera = new HBox();
         botonera.getChildren().addAll(btnNuevo,btnModificar,btnEliminar,btnAsignar);
         pane.getChildren().addAll(table,botonera);
-        Scene scene = new Scene(pane,550,300);
+        Scene scene = new Scene(pane,600,350);
         this.setScene(scene);
     }
 
